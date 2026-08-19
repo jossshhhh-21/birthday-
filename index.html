@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>Birthday Surprise 🎂</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff9ecb, #9b8cff);
+    color: white;
+}
+
+/* OPENING SCREEN */
+
+#opening {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ff75ad, #8c7bff);
+    z-index: 999;
+    padding: 25px;
+}
+
+#opening h1 {
+    font-size: 42px;
+    margin: 10px;
+    animation: bounce 2s infinite;
+}
+
+.gift {
+    font-size: 100px;
+    animation: giftShake 1.5s infinite;
+}
+
+.openButton {
+    border: none;
+    padding: 18px 30px;
+    border-radius: 40px;
+    background: white;
+    color: #ff4f91;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 8px 25px rgba(0,0,0,.25);
+    margin-top: 25px;
+}
+
+.openButton:active {
+    transform: scale(.92);
+}
+
+/* MAIN */
+
+#main {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 40px;
+    margin: 5px;
+    text-shadow: 0 4px 10px rgba(0,0,0,.2);
+}
+
+.subtitle {
+    margin-bottom: 15px;
+}
+
+/* CAKE */
+
+.cake {
+    position: relative;
+    width: 300px;
+    height: 280px;
+    margin: 10px auto;
+}
+
+.plate {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 35px;
+    background: #eee;
+    border-radius: 50%;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 260px;
+    height: 80px;
+    background: #8b4513;
+    border-radius: 12px 12px 20px 20px;
+}
+
+.middle {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    height: 70px;
+    background: #ff6fa5;
+    border-radius: 12px;
+}
+
+.top {
+    position: absolute;
+    bottom: 155px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 185px;
+    height: 60px;
+    background: #fff0f5;
+    border-radius: 15px;
+}
+
+.cream {
+    position: absolute;
+    bottom: 198px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 185px;
+    height: 25px;
+    background: white;
+    border-radius: 50%;
+}
+
+/* CANDLES */
+
+.candle {
+    position: absolute;
+    bottom: 195px;
+    width: 22px;
+    height: 65px;
+    background: repeating-linear-gradient(
+        45deg,
+        white 0px,
+        white 7px,
+        #ff4f91 7px,
+        #ff4f91 14px
+    );
+    border-radius: 5px;
+    z-index: 5;
+}
+
+.candle1 {
+    left: 80px;
+}
+
+.candle2 {
+    left: 139px;
+}
+
+.candle3 {
+    left: 198px;
+}
+
+.flame {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 28px;
+    background: orange;
+    border-radius: 50%;
+    box-shadow: 0 0 10px orange, 0 0 20px yellow;
+    animation: flicker .2s infinite alternate;
+}
+
+.candle.off .flame {
+    display: none;
+}
+
+/* INSTRUCTION */
+
+.instruction {
+    font-size: 17px;
+    margin-top: -5px;
+}
+
+/* MUSIC */
+
+.music {
+    background: rgba(255,255,255,.9);
+    padding: 12px;
+    border-radius: 20px;
+    max-width: 400px;
+    margin: 10px auto;
+}
+
+.music p {
+    color: #ff4f91;
+    font-weight: bold;
+    margin: 3px;
+}
+
+audio {
+    width: 100%;
+}
+
+/* SURPRISE */
+
+#surprise {
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,.65);
+    z-index: 500;
+    padding: 20px;
+}
+
+.surpriseBox {
+    background: white;
+    color: #ff4f91;
+    padding: 30px 20px;
+    border-radius: 25px;
+    max-width: 400px;
+    animation: pop .5s ease;
+}
+
+.surpriseBox h2 {
+    font-size: 35px;
+}
+
+.surpriseBox p {
+    color: #555;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.closeButton {
+    border: none;
+    padding: 13px 25px;
+    border-radius: 30px;
+    background: #ff4f91;
+    color: white;
+    font-size: 16px;
+}
+
+/* CONFETTI */
+
+.confetti {
+    position: fixed;
+    top: -20px;
+    width: 10px;
+    height: 10px;
+    z-index: 1000;
+    animation: fall 3s linear forwards;
+}
+
+/* HEARTS */
+
+.heart {
+    position: fixed;
+    bottom: -30px;
+    font-size: 25px;
+    pointer-events: none;
+    animation: float 5s linear forwards;
+}
+
+/* ANIMATIONS */
+
+@keyframes bounce {
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes giftShake {
+    0%,100% {
+        transform: rotate(0);
+    }
+
+    25% {
+        transform: rotate(-8deg);
+    }
+
+    75% {
+        transform: rotate(8deg);
+    }
+}
+
+@keyframes flicker {
+    from {
+        transform: translateX(-50%) scale(1);
+    }
+
+    to {
+        transform: translateX(-50%) scale(.8);
+    }
+}
+
+@keyframes pop {
+    from {
+        transform: scale(.5);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+    }
+}
+
+@keyframes float {
+    to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- OPENING -->
+
+<div id="opening">
+
+    <div class="gift">🎁</div>
+
+    <h1>A Birthday Surprise!</h1>
+
+    <p>Someone has prepared something special for you... 💖</p>
+
+    <button class="openButton" onclick="openSurprise()">
+        🎁 Open Your Surprise
+    </button>
+
+</div>
+
+
+<!-- MAIN PAGE -->
+
+<div id="main">
+
+    <h1>🎂 Happy Birthday! 🎉</h1>
+
+    <div class="subtitle">
+        Make a wish and tap the candles! 🕯️
+    </div>
+
+    <div class="cake">
+
+        <div class="plate"></div>
+
+        <div class="bottom"></div>
+        <div class="middle"></div>
+        <div class="top"></div>
+
+        <div class="cream"></div>
+
+        <div class="candle candle1"
+             onclick="blowCandle(this)">
+            <div class="flame"></div>
+        </div>
+
+        <div class="candle candle2"
+             onclick="blowCandle(this)">
+            <div class="flame"></div>
+        </div>
+
+        <div class="candle candle3"
+             onclick="blowCandle(this)">
+            <div class="flame"></div>
+        </div>
+
+    </div>
+
+    <div class="instruction">
+        👆 Tap each candle to blow it out!
+    </div>
+
+    <!-- SONG -->
+
+    <div class="music">
+
+        <p>🎵 Birthday Song</p>
+
+        <!-- YOUR SONG -->
+
+        <audio id="song" controls>
+            <source src="birthday.mp3" type="audio/mpeg">
+        </audio>
+
+    </div>
+
+</div>
+
+
+<!-- FINAL SURPRISE -->
+
+<div id="surprise">
+
+    <div class="surpriseBox">
+
+        <h2>🎉 SURPRISE! 🎉</h2>
+
+        <p>
+            💖 Happy Birthday! 💖
+        </p>
+
+        <p>
+            May your birthday be filled with
+            happiness, laughter, love, and
+            beautiful memories. 🎂✨
+        </p>
+
+        <p>
+            You deserve all the happiness
+            in the world! 🥳💕
+        </p>
+
+        <button class="closeButton"
+                onclick="closeSurprise()">
+            ❤️ Thank You
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let candlesOut = 0;
+
+
+/* OPEN WEBSITE */
+
+function openSurprise() {
+
+    document.getElementById("opening").style.display = "none";
+
+    document.getElementById("main").style.display = "block";
+
+    createConfetti();
+
+}
+
+
+/* CANDLE */
+
+function blowCandle(candle) {
+
+    if (candle.classList.contains("off")) {
+        return;
+    }
+
+    candle.classList.add("off");
+
+    candlesOut++;
+
+    createSmoke(candle);
+
+    if (candlesOut === 3) {
+
+        setTimeout(() => {
+
+            showBirthday();
+
+        }, 700);
+
+    }
+
+}
+
+
+/* SMOKE */
+
+function createSmoke(candle) {
+
+    const smoke = document.createElement("div");
+
+    smoke.innerHTML = "💨";
+
+    smoke.style.position = "absolute";
+
+    smoke.style.left =
+        candle.offsetLeft + "px";
+
+    smoke.style.top =
+        (candle.offsetTop - 30) + "px";
+
+    smoke.style.fontSize = "25px";
+
+    smoke.style.zIndex = "20";
+
+    document.querySelector(".cake")
+        .appendChild(smoke);
+
+    setTimeout(() => {
+        smoke.remove();
+    }, 1000);
+
+}
+
+
+/* SHOW FINAL SURPRISE */
+
+function showBirthday() {
+
+    document.getElementById("surprise")
+        .style.display = "flex";
+
+    createConfetti();
+
+    createConfetti();
+
+    const song =
+        document.getElementById("song");
+
+    song.play().catch(() => {
+
+        // Phone browsers may require
+        // the user to press play.
+
+    });
+
+}
+
+
+/* CLOSE */
+
+function closeSurprise() {
+
+    document.getElementById("surprise")
+        .style.display = "none";
+
+}
+
+
+/* CONFETTI */
+
+function createConfetti() {
+
+    for (let i = 0; i < 100; i++) {
+
+        const piece =
+            document.createElement("div");
+
+        piece.className = "confetti";
+
+        piece.style.left =
+            Math.random() * 100 + "vw";
+
+        piece.style.background =
+            "hsl(" +
+            Math.random() * 360 +
+            ",100%,60%)";
+
+        piece.style.animationDelay =
+            Math.random() * 1.5 + "s";
+
+        document.body.appendChild(piece);
+
+        setTimeout(() => {
+
+            piece.remove();
+
+        }, 4000);
+
+    }
+
+}
+
+
+/* FLOATING HEARTS */
+
+function createHeart() {
+
+    const heart =
+        document.createElement("div");
+
+    heart.className = "heart";
+
+    const hearts = [
+        "❤️",
+        "💖",
+        "💕",
+        "💗",
+        "💓"
+    ];
+
+    heart.innerHTML =
+        hearts[Math.floor(Math.random() * hearts.length)];
+
+    heart.style.left =
+        Math.random() * 100 + "vw";
+
+    heart.style.animationDuration =
+        (4 + Math.random() * 3) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+
+        heart.remove();
+
+    }, 7000);
+
+}
+
+setInterval(createHeart, 700);
+
+</script>
+
+</body>
+</html>
